@@ -597,5 +597,455 @@
   </div>
 </div>
 
+<!-- CALCULADORA -->
+<div style="margin-top:32px;">
+  <div style="color:var(--a1);font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:16px;">🧮 Calculadora — Circuito → PlugData</div>
+ 
+  <!-- TABS DA CALCULADORA -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="calc-tabs">
+    <button class="cbtn active" onclick="showCalc('rc')">RC Filter → hip~/lop~</button>
+    <button class="cbtn" onclick="showCalc('gain')">Ganho de Válvula → *~</button>
+    <button class="cbtn" onclick="showCalc('bypass')">Bypass Cap → Ganho</button>
+    <button class="cbtn" onclick="showCalc('sag')">Power Sag → env~</button>
+    <button class="cbtn" onclick="showCalc('lfo')">LFO → osc~</button>
+    <button class="cbtn" onclick="showCalc('triode')">Triodo Completo</button>
+  </div>
+ 
+  <!-- RC FILTER -->
+  <div class="calc-panel" id="calc-rc">
+    <div class="calc-title">Filtro RC — Coupling Cap / Grid Stopper</div>
+    <div class="calc-desc">Calcula a frequência de corte e o objeto PlugData correspondente</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Resistência (R)</label>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input type="number" id="rc-r" value="68" min="0.001" step="any" oninput="calcRC()">
+          <select id="rc-r-unit" onchange="calcRC()">
+            <option value="1">Ω</option>
+            <option value="1000" selected>KΩ</option>
+            <option value="1000000">MΩ</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label>Capacitância (C)</label>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input type="number" id="rc-c" value="0.022" min="0.0001" step="any" oninput="calcRC()">
+          <select id="rc-c-unit" onchange="calcRC()">
+            <option value="1">F</option>
+            <option value="0.000001" selected>µF</option>
+            <option value="0.000000001">nF</option>
+            <option value="0.000000000001">pF</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label>Tipo de filtro</label>
+        <select id="rc-type" onchange="calcRC()">
+          <option value="hip">High Pass (coupling cap) → hip~</option>
+          <option value="lop">Low Pass (grid stopper) → lop~</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-result" id="rc-result">
+      <div class="result-freq" id="rc-freq">—</div>
+      <div class="result-obj" id="rc-obj">—</div>
+      <div class="result-note" id="rc-note">—</div>
+    </div>
+  </div>
+ 
+  <!-- GANHO VALVULA -->
+  <div class="calc-panel" id="calc-gain" style="display:none">
+    <div class="calc-title">Ganho de Válvula Triodo → *~</div>
+    <div class="calc-desc">Calcula o multiplicador do estágio baseado nos componentes reais</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Tipo de válvula</label>
+        <select id="g-tube" onchange="fillTubeValues()">
+          <option value="100,62500">12AX7 / ECC83 (μ=100)</option>
+          <option value="17,7700">12AU7 / ECC82 (μ=17)</option>
+          <option value="60,10900">12AT7 / ECC81 (μ=60)</option>
+          <option value="11,5200">6SN7 (μ=11)</option>
+          <option value="0,0">Custom</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>μ (fator de amplificação)</label>
+        <input type="number" id="g-mu" value="100" min="1" oninput="calcGain()">
+      </div>
+      <div class="calc-field">
+        <label>Rp — resistência de placa (Ω)</label>
+        <input type="number" id="g-rp" value="62500" min="1" oninput="calcGain()">
+      </div>
+      <div class="calc-field">
+        <label>Rload — resistor de carga (KΩ)</label>
+        <input type="number" id="g-rl" value="100" min="1" oninput="calcGain()">
+      </div>
+      <div class="calc-field">
+        <label>Rk — resistor de cathode (Ω)</label>
+        <input type="number" id="g-rk" value="820" min="0" oninput="calcGain()">
+      </div>
+      <div class="calc-field">
+        <label>Bypass cap no cathode?</label>
+        <select id="g-bypass" onchange="calcGain()">
+          <option value="1">Sim — ganho máximo</option>
+          <option value="0">Não — ganho reduzido</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-result" id="gain-result">
+      <div class="result-freq" id="gain-val">—</div>
+      <div class="result-obj" id="gain-obj">—</div>
+      <div class="result-note" id="gain-note">—</div>
+    </div>
+  </div>
+ 
+  <!-- BYPASS CAP -->
+  <div class="calc-panel" id="calc-bypass" style="display:none">
+    <div class="calc-title">Cathode Bypass Cap — Frequência de Corte do Boost</div>
+    <div class="calc-desc">Calcula em qual frequência o ganho começa a subir com o bypass cap</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Rk — resistor de cathode (Ω)</label>
+        <input type="number" id="bp-rk" value="820" min="1" oninput="calcBypass()">
+      </div>
+      <div class="calc-field">
+        <label>Capacitor de bypass</label>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input type="number" id="bp-c" value="0.68" min="0.0001" step="any" oninput="calcBypass()">
+          <select id="bp-c-unit" onchange="calcBypass()">
+            <option value="0.000001" selected>µF</option>
+            <option value="0.000000001">nF</option>
+          </select>
+        </div>
+      </div>
+      <div class="calc-field">
+        <label>Ganho sem bypass (*~)</label>
+        <input type="number" id="bp-gain-low" value="25" min="1" oninput="calcBypass()">
+      </div>
+      <div class="calc-field">
+        <label>Ganho com bypass (*~)</label>
+        <input type="number" id="bp-gain-high" value="45" min="1" oninput="calcBypass()">
+      </div>
+    </div>
+    <div class="calc-result" id="bypass-result">
+      <div class="result-freq" id="bp-freq">—</div>
+      <div class="result-obj" id="bp-obj">—</div>
+      <div class="result-note" id="bp-note">—</div>
+    </div>
+  </div>
+ 
+  <!-- POWER SAG -->
+  <div class="calc-panel" id="calc-sag" style="display:none">
+    <div class="calc-title">Power Sag → env~ threshold e depth</div>
+    <div class="calc-desc">Calcula os valores do sag para simular queda de tensão dinâmica</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Wattagem do amp (W)</label>
+        <input type="number" id="sag-w" value="50" min="1" oninput="calcSag()">
+      </div>
+      <div class="calc-field">
+        <label>Intensidade do sag</label>
+        <select id="sag-level" onchange="calcSag()">
+          <option value="0.1">Leve — headroom alto (100W+)</option>
+          <option value="0.25" selected>Médio — típico (50W)</option>
+          <option value="0.4">Forte — satura rápido (15W)</option>
+          <option value="0.6">Muito forte — amp small (5W)</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Attack do envelope (ms)</label>
+        <input type="number" id="sag-att" value="10" min="1" oninput="calcSag()">
+      </div>
+      <div class="calc-field">
+        <label>Release do envelope (ms)</label>
+        <input type="number" id="sag-rel" value="150" min="1" oninput="calcSag()">
+      </div>
+    </div>
+    <div class="calc-result" id="sag-result">
+      <div class="result-freq" id="sag-val">—</div>
+      <div class="result-obj" id="sag-obj">—</div>
+      <div class="result-note" id="sag-note">—</div>
+    </div>
+  </div>
+ 
+  <!-- LFO -->
+  <div class="calc-panel" id="calc-lfo" style="display:none">
+    <div class="calc-title">LFO → osc~ rate e depth</div>
+    <div class="calc-desc">Calcula os parâmetros do LFO para tremolo, chorus, flanger e vibrato</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Tipo de efeito</label>
+        <select id="lfo-type" onchange="calcLFO()">
+          <option value="tremolo">Tremolo</option>
+          <option value="chorus">Chorus</option>
+          <option value="flanger">Flanger</option>
+          <option value="vibrato">Vibrato</option>
+          <option value="wah">Auto-Wah</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Rate (Hz)</label>
+        <input type="number" id="lfo-rate" value="1.5" min="0.01" step="0.1" oninput="calcLFO()">
+      </div>
+      <div class="calc-field">
+        <label>Depth (0.0 a 1.0)</label>
+        <input type="number" id="lfo-depth" value="0.5" min="0.01" max="1" step="0.05" oninput="calcLFO()">
+      </div>
+    </div>
+    <div class="calc-result" id="lfo-result">
+      <div class="result-freq" id="lfo-val">—</div>
+      <div class="result-obj" id="lfo-obj">—</div>
+      <div class="result-note" id="lfo-note">—</div>
+    </div>
+  </div>
+ 
+  <!-- TRIODO COMPLETO -->
+  <div class="calc-panel" id="calc-triode" style="display:none">
+    <div class="calc-title">Estágio de Triodo Completo — Patch PlugData Gerado</div>
+    <div class="calc-desc">Preencha os valores do esquema e receba o patch completo pronto para copiar</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Válvula</label>
+        <select id="t-tube" onchange="fillTriodeValues()">
+          <option value="100,62500,45">12AX7 (μ=100)</option>
+          <option value="17,7700,12">12AU7 (μ=17)</option>
+          <option value="60,10900,25">12AT7 (μ=60)</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Coupling cap de entrada (µF)</label>
+        <input type="number" id="t-cin" value="0.022" step="any" oninput="calcTriode()">
+      </div>
+      <div class="calc-field">
+        <label>Resistor de entrada (KΩ)</label>
+        <input type="number" id="t-rin" value="68" oninput="calcTriode()">
+      </div>
+      <div class="calc-field">
+        <label>Rload — carga (KΩ)</label>
+        <input type="number" id="t-rl" value="100" oninput="calcTriode()">
+      </div>
+      <div class="calc-field">
+        <label>Rk — cathode (Ω)</label>
+        <input type="number" id="t-rk" value="820" oninput="calcTriode()">
+      </div>
+      <div class="calc-field">
+        <label>Bypass cap cathode (µF)</label>
+        <input type="number" id="t-cbp" value="0.68" step="any" oninput="calcTriode()">
+      </div>
+      <div class="calc-field">
+        <label>Coupling cap de saída (µF)</label>
+        <input type="number" id="t-cout" value="0.022" step="any" oninput="calcTriode()">
+      </div>
+      <div class="calc-field">
+        <label>Resistor de saída (KΩ)</label>
+        <input type="number" id="t-rout" value="470" oninput="calcTriode()">
+      </div>
+    </div>
+    <div class="calc-result" id="triode-result" style="padding:0">
+      <pre id="triode-patch" style="font-family:'Share Tech Mono',monospace;font-size:12px;color:#2ecc71;background:#0d0d1a;padding:16px;border-radius:4px;line-height:1.8;white-space:pre-wrap;margin:0;border-top:2px solid #2ecc71;"></pre>
+      <button onclick="copyTriode()" style="margin:10px;padding:8px 20px;background:var(--a3);color:#000;border:none;border-radius:4px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px;">📋 COPIAR PATCH</button>
+    </div>
+  </div>
+ 
+</div>
+ 
+<style>
+.cbtn{padding:7px 14px;border-radius:4px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;}
+.cbtn:hover{color:var(--text);border-color:#444;}
+.cbtn.active{background:var(--a1);color:#000;border-color:transparent;}
+.calc-panel{background:#12121a;border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:4px;}
+.calc-title{color:var(--a1);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.calc-desc{color:var(--muted);font-size:11px;margin-bottom:16px;}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px;}
+.calc-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;}
+.calc-field input,.calc-field select{width:100%;background:#1a1a28;border:1px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--text);font-size:13px;font-family:'Share Tech Mono',monospace;outline:none;transition:border .2s;}
+.calc-field input:focus,.calc-field select:focus{border-color:var(--a1);}
+.calc-field select option{background:#1a1a28;}
+.calc-result{background:#0d0d1a;border:1px solid var(--border);border-radius:4px;padding:14px;border-top:2px solid var(--a1);}
+.result-freq{font-size:22px;font-weight:700;color:var(--a1);font-family:'Share Tech Mono',monospace;margin-bottom:6px;}
+.result-obj{font-size:16px;color:var(--a3);font-family:'Share Tech Mono',monospace;background:#1a2a1a;padding:8px 12px;border-radius:4px;margin-bottom:6px;border-left:3px solid var(--a3);}
+.result-note{font-size:11px;color:var(--muted);line-height:1.6;}
+</style>
+ 
+<script>
+function showCalc(id) {
+  document.querySelectorAll('.calc-panel').forEach(p => p.style.display='none');
+  document.querySelectorAll('.cbtn').forEach(b => b.classList.remove('active'));
+  document.getElementById('calc-'+id).style.display='block';
+  event.target.classList.add('active');
+  // trigger calc
+  const fns = {rc:calcRC,gain:calcGain,bypass:calcBypass,sag:calcSag,lfo:calcLFO,triode:calcTriode};
+  if(fns[id]) fns[id]();
+}
+ 
+function calcRC() {
+  const R = parseFloat(document.getElementById('rc-r').value) * parseFloat(document.getElementById('rc-r-unit').value);
+  const C = parseFloat(document.getElementById('rc-c').value) * parseFloat(document.getElementById('rc-c-unit').value);
+  const type = document.getElementById('rc-type').value;
+  if(!R||!C) return;
+  const f = 1 / (2 * Math.PI * R * C);
+  const fRound = Math.round(f);
+  const obj = type === 'hip' ? `[hip~ ${fRound}]` : `[lop~ ${fRound}]`;
+  const role = type === 'hip' ? 'Corta frequências ABAIXO de' : 'Corta frequências ACIMA de';
+  const use = type === 'hip' ? 'Coupling cap, grid stopper HP, DC block' : 'Anti-aliasing, cabinet sim, grid stopper LP';
+  document.getElementById('rc-freq').textContent = fRound + ' Hz';
+  document.getElementById('rc-obj').textContent = obj;
+  document.getElementById('rc-note').innerHTML = `${role} <strong>${fRound}Hz</strong><br>Uso: ${use}`;
+}
+ 
+function fillTubeValues() {
+  const vals = document.getElementById('g-tube').value.split(',');
+  if(vals[0]==='0') return;
+  document.getElementById('g-mu').value = vals[0];
+  document.getElementById('g-rp').value = vals[1];
+  calcGain();
+}
+ 
+function calcGain() {
+  const mu = parseFloat(document.getElementById('g-mu').value);
+  const rp = parseFloat(document.getElementById('g-rp').value);
+  const rl = parseFloat(document.getElementById('g-rl').value) * 1000;
+  const rk = parseFloat(document.getElementById('g-rk').value);
+  const bypass = document.getElementById('g-bypass').value === '1';
+  if(!mu||!rp||!rl) return;
+  let gain;
+  if(bypass) {
+    gain = (mu * rl) / (rl + rp);
+  } else {
+    gain = (mu * rl) / (rl + rp + (mu+1)*rk);
+  }
+  gain = Math.round(gain * 10) / 10;
+  const bias = Math.round(rk * 0.001 * 100) / 100;
+  document.getElementById('gain-val').textContent = 'Ganho: ' + gain + 'x';
+  document.getElementById('gain-obj').textContent = `[*~ ${gain}]`;
+  document.getElementById('gain-note').innerHTML = 
+    `Bias offset (DC): <strong>[+~ ${bias > 0.15 ? '0.15' : bias.toFixed(3)}]</strong> antes do expr~<br>` +
+    `Clipping: <strong>[expr~ $v1/(1+abs($v1))]</strong><br>` +
+    `${bypass ? 'Com bypass cap — ganho máximo' : 'Sem bypass cap — ganho reduzido'}`;
+}
+ 
+function calcBypass() {
+  const rk = parseFloat(document.getElementById('bp-rk').value);
+  const c = parseFloat(document.getElementById('bp-c').value) * parseFloat(document.getElementById('bp-c-unit').value);
+  const gLow = document.getElementById('bp-gain-low').value;
+  const gHigh = document.getElementById('bp-gain-high').value;
+  if(!rk||!c) return;
+  const f = Math.round(1 / (2 * Math.PI * rk * c));
+  document.getElementById('bp-freq').textContent = 'Boost começa em: ' + f + ' Hz';
+  document.getElementById('bp-obj').textContent = `[hip~ ${f}]  [*~ ${gHigh}]`;
+  document.getElementById('bp-note').innerHTML = 
+    `Abaixo de <strong>${f}Hz</strong>: ganho = <strong>[*~ ${gLow}]</strong><br>` +
+    `Acima de <strong>${f}Hz</strong>: ganho = <strong>[*~ ${gHigh}]</strong><br>` +
+    `Adicionar <strong>[hip~ ${f}]</strong> antes do *~ para simular a transição`;
+}
+ 
+function calcSag() {
+  const w = parseFloat(document.getElementById('sag-w').value);
+  const level = parseFloat(document.getElementById('sag-level').value);
+  const att = document.getElementById('sag-att').value;
+  const rel = document.getElementById('sag-rel').value;
+  if(!w) return;
+  const thresh = Math.round((0.005 + (100/w)*0.0005) * 1000) / 1000;
+  const depth = level;
+  document.getElementById('sag-val').textContent = `Threshold: ${thresh}  Depth: ${depth}`;
+  document.getElementById('sag-obj').textContent = 
+    `[env~]  [> ${thresh}]  [*~ ${depth}]  [*~] sinal`;
+  document.getElementById('sag-note').innerHTML = 
+    `Amp de <strong>${w}W</strong>: threshold env~ = <strong>${thresh}</strong><br>` +
+    `Sag depth = <strong>${depth}</strong> (redução de ganho)<br>` +
+    `Attack: <strong>${att}ms</strong> | Release: <strong>${rel}ms</strong><br>` +
+    `Use <strong>[line~ 0 ${att}]</strong> e <strong>[line~ 1 ${rel}]</strong> para suavizar`;
+}
+ 
+function calcLFO() {
+  const type = document.getElementById('lfo-type').value;
+  const rate = parseFloat(document.getElementById('lfo-rate').value);
+  const depth = parseFloat(document.getElementById('lfo-depth').value);
+  if(!rate||!depth) return;
+  const configs = {
+    tremolo: { base: 0, unit: 'vol', obj: `[osc~ ${rate}]\n[*~ ${depth}]\n[+~ 1]\n[*~ 0.5] → sinal`, note: `LFO modula volume. Range: 1-8Hz. Depth alto = tremolo intenso` },
+    chorus: { base: 20, unit: 'ms delay', obj: `[osc~ ${rate}] × ${Math.round(depth*15)}\n[+~ 20] → delread~ tempo\n[+~] 50% dry + 50% wet`, note: `Delay base 20ms ±${Math.round(depth*15)}ms. LFO range: 0.2-3Hz` },
+    flanger: { base: 5, unit: 'ms delay', obj: `[osc~ ${rate}] × ${Math.round(depth*8)}\n[+~ 5] → delread~ tempo\n[*~ 0.7] feedback`, note: `Delay 1-10ms. Feedback 0.5-0.9 = jet sound` },
+    vibrato: { base: 0, unit: 'pitch', obj: `[osc~ ${rate}] × ${Math.round(depth*15)}\n[+~ tempo_base] → delread~`, note: `Modula tempo do delread~. Profundidade pequena = natural` },
+    wah: { base: 500, unit: 'Hz freq', obj: `[env~]\n[*~ ${Math.round(depth*2000)}]\n[+~ 500] → freq do [vcf~]`, note: `Envelope follower abre filtro. Toca forte = abre mais` }
+  };
+  const c = configs[type];
+  document.getElementById('lfo-val').textContent = `Rate: ${rate}Hz  Depth: ${depth}`;
+  document.getElementById('lfo-obj').textContent = c.obj;
+  document.getElementById('lfo-note').textContent = c.note;
+}
+ 
+function fillTriodeValues() {
+  const vals = document.getElementById('t-tube').value.split(',');
+  calcTriode();
+}
+ 
+function calcTriode() {
+  const tubeVal = document.getElementById('t-tube').value.split(',');
+  const mu = parseFloat(tubeVal[0]);
+  const rp = parseFloat(tubeVal[1]);
+  const gainApprox = parseFloat(tubeVal[2]);
+  const cin = parseFloat(document.getElementById('t-cin').value);
+  const rin = parseFloat(document.getElementById('t-rin').value);
+  const rl = parseFloat(document.getElementById('t-rl').value);
+  const rk = parseFloat(document.getElementById('t-rk').value);
+  const cbp = parseFloat(document.getElementById('t-cbp').value);
+  const cout = parseFloat(document.getElementById('t-cout').value);
+  const rout = parseFloat(document.getElementById('t-rout').value);
+ 
+  const fIn = Math.round(1 / (2 * Math.PI * rin * 1000 * cin * 0.000001));
+  const fOut = Math.round(1 / (2 * Math.PI * rout * 1000 * cout * 0.000001));
+  const fBypass = Math.round(1 / (2 * Math.PI * rk * cbp * 0.000001));
+  const gain = Math.round((mu * rl * 1000) / (rl * 1000 + rp));
+  const gainNoBp = Math.round((mu * rl * 1000) / (rl * 1000 + rp + (mu+1)*rk));
+  const bias = Math.min(0.15, Math.round(rk * 0.0001 * 1000) / 1000);
+ 
+  const patch = `; ── ESTÁGIO DE TRIODO CALCULADO ──────────────────
+;
+[adc~]
+  |
+[lop~ 20000]          ; grid stopper ${rin}KΩ → RF block
+  |
+[hip~ ${fIn}]           ; coupling cap entrada ${cin}µF + ${rin}KΩ
+  |
+[+~ ${bias.toFixed(3)}]          ; cathode bias offset (Rk=${rk}Ω)
+  |
+[*~ ${gain}]              ; ganho c/ bypass (μ=${mu}, Rload=${rl}KΩ)
+  |                     ; sem bypass: [*~ ${gainNoBp}]
+[expr~ $v1/(1+abs($v1))] ; soft clip assimétrico de válvula
+  |
+[hip~ 20]             ; remove DC offset residual
+  |
+[hip~ ${fBypass}]          ; bypass cap ${cbp}µF + ${rk}Ω — boost acima
+  |
+[hip~ ${fOut}]           ; coupling cap saída ${cout}µF + ${rout}KΩ
+  |
+[*~ volume]           ; potenciômetro de volume do canal
+  |
+[dac~]`;
+ 
+  document.getElementById('triode-patch').textContent = patch;
+}
+ 
+function copyTriode() {
+  const text = document.getElementById('triode-patch').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✅ COPIADO!';
+    setTimeout(() => btn.textContent = '📋 COPIAR PATCH', 2000);
+  });
+}
+ 
+// Init
+calcRC();
+calcGain();
+calcBypass();
+calcSag();
+calcLFO();
+calcTriode();
+</script>
+
+
 </body>
 </html>
