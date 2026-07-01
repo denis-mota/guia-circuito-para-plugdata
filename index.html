@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🎸</text></svg>">
+<link rel="icon" href="data:",>
 <title>Circuito to PlugData</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700&display=swap');
@@ -50,6 +50,21 @@
   .ftitle{color:var(--a1);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
   .pgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center;}
   .pcard{background:#1a1a28;border-radius:4px;padding:10px;}
+  .cbtn{padding:7px 14px;border-radius:4px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;}
+  .cbtn:hover{color:var(--text);border-color:#444;}
+  .cbtn.active{background:var(--a1);color:#000;border-color:transparent;}
+  .calc-panel{background:#12121a;border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:4px;}
+  .calc-title{color:var(--a1);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+  .calc-desc{color:var(--muted);font-size:11px;margin-bottom:16px;}
+  .calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px;}
+  .calc-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;}
+  .calc-field input,.calc-field select{width:100%;background:#1a1a28;border:1px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--text);font-size:13px;font-family:'Share Tech Mono',monospace;outline:none;transition:border .2s;}
+  .calc-field input:focus,.calc-field select:focus{border-color:var(--a1);}
+  .calc-field select option{background:#1a1a28;}
+  .calc-result{background:#0d0d1a;border:1px solid var(--border);border-radius:4px;padding:14px;border-top:2px solid var(--a1);}
+  .result-freq{font-size:22px;font-weight:700;color:var(--a1);font-family:'Share Tech Mono',monospace;margin-bottom:6px;}
+  .result-obj{font-size:16px;color:var(--a3);font-family:'Share Tech Mono',monospace;background:#1a2a1a;padding:8px 12px;border-radius:4px;margin-bottom:6px;border-left:3px solid var(--a3);}
+  .result-note{font-size:11px;color:var(--muted);line-height:1.6;}
 </style>
 </head>
 <body>
@@ -68,7 +83,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">〰</span>Coupling Cap</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="19" x2="17" y2="19" stroke="#4fc3f7" stroke-width="2"/><line x1="17" y1="9" x2="17" y2="29" stroke="#4fc3f7" stroke-width="2.5"/><line x1="21" y1="9" x2="21" y2="29" stroke="#4fc3f7" stroke-width="2.5"/><line x1="21" y1="19" x2="45" y2="19" stroke="#4fc3f7" stroke-width="2"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="19" x2="17" y2="19" stroke="#4fc3f7" stroke-width="2"/><line x1="17" y1="8" x2="17" y2="30" stroke="#4fc3f7" stroke-width="2.5"/><line x1="23" y1="8" x2="23" y2="30" stroke="#4fc3f7" stroke-width="2.5"/><line x1="23" y1="19" x2="45" y2="19" stroke="#4fc3f7" stroke-width="2"/></svg></td>
   <td>Remove DC e corta graves — separa estágios de válvula</td>
   <td><span class="fo">f = 1/(2π×R×C)</span><br><span class="fo">.022uF+68K=106Hz</span></td>
   <td><span class="po pf">[hip~ 106]</span><span class="po pf">[hip~ 35]</span></td>
@@ -77,29 +92,11 @@
 
 <tr>
   <td><div class="cn"><span class="ic">🔻</span>Bypass Cap</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="19" x2="17" y2="19" stroke="#2ecc71" stroke-width="2"/><line x1="17" y1="9" x2="17" y2="29" stroke="#2ecc71" stroke-width="2.5"/><line x1="21" y1="9" x2="21" y2="29" stroke="#2ecc71" stroke-width="2.5"/><line x1="21" y1="19" x2="45" y2="19" stroke="#2ecc71" stroke-width="2"/><line x1="30" y1="27" x2="30" y2="37" stroke="#2ecc71" stroke-width="1.5"/><line x1="25" y1="37" x2="35" y2="37" stroke="#2ecc71" stroke-width="1.5"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="19" x2="17" y2="19" stroke="#2ecc71" stroke-width="2"/><line x1="17" y1="8" x2="17" y2="30" stroke="#2ecc71" stroke-width="2.5"/><line x1="23" y1="8" x2="23" y2="30" stroke="#2ecc71" stroke-width="2.5"/><line x1="23" y1="19" x2="45" y2="19" stroke="#2ecc71" stroke-width="2"/><line x1="30" y1="30" x2="30" y2="36" stroke="#2ecc71" stroke-width="1.5"/><line x1="26" y1="36" x2="34" y2="36" stroke="#2ecc71" stroke-width="1.5"/></svg></td>
   <td>Bypass do resistor de cathode — aumenta o ganho do estágio em determinada frequência</td>
   <td><span class="fo">820Ω+25uF = 7.7Hz</span><br><span class="fo">Sem bypass: ganho ~30</span><br><span class="fo">Com bypass: ganho ~60</span></td>
   <td><span class="po pg">[*~ 60]</span><span class="po pf">[hip~ 8]</span></td>
   <td class="ex">Sem bypass cap → ganho ~30<br>Com bypass cap → ganho ~60<br>Dobra o ganho do estágio</td>
-</tr>
-
-<tr>
-  <td><div class="cn"><span class="ic">🛑</span>Grid Stopper</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><line x1="4" y1="19" x2="11" y2="19" stroke="#4fc3f7" stroke-width="2"/><rect x="11" y="13" width="20" height="12" fill="none" stroke="#4fc3f7" stroke-width="1.5" rx="2"/><text x="13" y="23" fill="#4fc3f7" font-size="7" font-family="monospace">68K</text><line x1="31" y1="19" x2="38" y2="19" stroke="#4fc3f7" stroke-width="2"/><circle cx="38" cy="19" r="3" fill="#4fc3f7"/><line x1="38" y1="19" x2="46" y2="19" stroke="#4fc3f7" stroke-width="2"/></svg></td>
-  <td>Resistor em série com o grid da válvula — evita oscilação parasita em RF e protege o grid</td>
-  <td><span class="fo">f = 1/(2π×68K×Cgrid)</span><br><span class="fo">Cgrid≈10-100pF</span><br><span class="fo">Corta acima de 20-200kHz</span></td>
-  <td><span class="po pf">[lop~ 20000]</span></td>
-  <td class="ex">68K grid stopper<br>corta RF parasita<br>lop~ 20000 simula<br>transparente ao áudio</td>
-</tr>
-
-<tr>
-  <td><div class="cn"><span class="ic">⚡</span>Cathode Bypass Cap</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><line x1="25" y1="4" x2="25" y2="14" stroke="#2ecc71" stroke-width="2"/><line x1="14" y1="14" x2="36" y2="14" stroke="#2ecc71" stroke-width="2.5"/><line x1="14" y1="18" x2="36" y2="18" stroke="#2ecc71" stroke-width="2.5"/><line x1="25" y1="18" x2="25" y2="28" stroke="#2ecc71" stroke-width="2"/><rect x="12" y="28" width="26" height="10" fill="none" stroke="#2ecc71" stroke-width="1.5" rx="2"/><text x="14" y="36" fill="#2ecc71" font-size="7" font-family="monospace">0.68uF</text></svg></td>
-  <td>Capacitor em paralelo com resistor de cathode — bypassa o Rk aumentando o ganho do estágio</td>
-  <td><span class="fo">f = 1/(2π×Rk×0.68uF)</span><br><span class="fo">820Ω+0.68uF = 285Hz</span><br><span class="fo">Ganho dobra acima de f</span></td>
-  <td><span class="po pg">[*~ 45]</span><span class="po pf">[hip~ 285]</span><span class="po pg">sem bypass: [*~ 25]</span></td>
-  <td class="ex">Com bypass: ganho ~45<br>Sem bypass: ganho ~25<br>0.68uF+820Ω → hip~ 285<br>ganho sobe acima de 285Hz</td>
 </tr>
 
 <tr>
@@ -113,7 +110,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">📐</span>Resistor de Carga</div><span class="tag tg">Ganho</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="19" x2="11" y2="19" stroke="#f5a623" stroke-width="2"/><rect x="11" y="13" width="28" height="12" fill="none" stroke="#f5a623" stroke-width="1.5" rx="2"/><line x1="39" y1="19" x2="45" y2="19" stroke="#f5a623" stroke-width="2"/><text x="15" y="23" fill="#f5a623" font-size="8" font-family="monospace">100K</text></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="19" x2="11" y2="19" stroke="#f5a623" stroke-width="2"/><polyline points="11,19 14,13 17,25 20,13 23,25 26,13 29,25 32,13 35,25 38,19" fill="none" stroke="#f5a623" stroke-width="1.5"/><line x1="38" y1="19" x2="45" y2="19" stroke="#f5a623" stroke-width="2"/></svg></td>
   <td>Define o ganho junto com a válvula — quanto maior o resistor, mais ganho disponível</td>
   <td><span class="fo">Gain ∝ Rload</span><br><span class="fo">100K → ganho alto ~55x</span><br><span class="fo">33K → ganho médio ~30x</span></td>
   <td><span class="po pg">[*~ 55]</span><span class="po pg">[*~ 30]</span></td>
@@ -131,7 +128,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">⚡</span>Diodo Clip</div><span class="tag tc">Clipping</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="19" x2="17" y2="19" stroke="#e74c3c" stroke-width="2"/><polygon points="17,11 17,27 29,19" fill="#e74c3c"/><line x1="29" y1="11" x2="29" y2="27" stroke="#e74c3c" stroke-width="2.5"/><line x1="29" y1="19" x2="45" y2="19" stroke="#e74c3c" stroke-width="2"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="19" x2="15" y2="19" stroke="#e74c3c" stroke-width="2"/><polygon points="15,12 15,26 27,19" fill="#e74c3c"/><line x1="27" y1="12" x2="27" y2="26" stroke="#e74c3c" stroke-width="2.5"/><line x1="27" y1="19" x2="45" y2="19" stroke="#e74c3c" stroke-width="2"/></svg></td>
   <td>Hard clip abrupto. Si=0.6V, Ge=0.3V, LED=1.7V — assimétrico gera harmônicos pares</td>
   <td><span class="fo">Si: clip~ -0.6 0.6</span><br><span class="fo">Ge: clip~ -0.3 0.3</span><br><span class="fo">Assimétrico: -0.6/+0.3</span></td>
   <td><span class="po pc">[clip~ -0.6 0.6]</span><span class="po pc">[clip~ -0.3 0.6]</span></td>
@@ -140,7 +137,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">🌊</span>Op-Amp Clip</div><span class="tag tc">Clipping</span></td>
-  <td><svg width="50" height="38"><polygon points="10,7 10,31 37,19" fill="none" stroke="#e74c3c" stroke-width="1.5"/><line x1="5" y1="13" x2="10" y2="13" stroke="#e74c3c" stroke-width="1.5"/><line x1="5" y1="25" x2="10" y2="25" stroke="#e74c3c" stroke-width="1.5"/><line x1="37" y1="19" x2="45" y2="19" stroke="#e74c3c" stroke-width="1.5"/></svg></td>
+  <td><svg width="50" height="38"><polygon points="12,7 12,31 39,19" fill="none" stroke="#e74c3c" stroke-width="1.5"/><line x1="5" y1="13" x2="12" y2="13" stroke="#e74c3c" stroke-width="1.5"/><line x1="5" y1="25" x2="12" y2="25" stroke="#e74c3c" stroke-width="1.5"/><line x1="39" y1="19" x2="47" y2="19" stroke="#e74c3c" stroke-width="1.5"/><text x="35" y="16" fill="#e74c3c" font-size="7" font-family="monospace">+</text><text x="35" y="28" fill="#e74c3c" font-size="7" font-family="monospace">-</text></svg></td>
   <td>Ganho alto + diodos no feedback — soft clip com muito caráter</td>
   <td><span class="fo">Gain = 1 + Rf/Rin</span><br><span class="fo">TS808: ~100x + diodos</span></td>
   <td><span class="po pc">[cyclone/overdrive~]</span><span class="po pc">[expr~ tanh($v1*2)*0.5]</span></td>
@@ -149,7 +146,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">📻</span>Tone Stack</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><text x="4" y="14" fill="#2ecc71" font-size="9" font-family="monospace">B M T</text><line x1="14" y1="14" x2="14" y2="34" stroke="#2ecc71" stroke-width="1.5"/><line x1="25" y1="14" x2="25" y2="34" stroke="#2ecc71" stroke-width="1.5"/><line x1="36" y1="14" x2="36" y2="34" stroke="#2ecc71" stroke-width="1.5"/></svg></td>
+  <td><svg width="50" height="38"><polyline points="5,19 8,13 11,25 14,13 17,25 20,13 23,25 26,13 29,25 32,19" fill="none" stroke="#2ecc71" stroke-width="1.5"/><polyline points="20,19 23,13 26,25 29,13 32,25 35,13 38,25 41,19" fill="none" stroke="#f5a623" stroke-width="1.5"/><polyline points="32,19 35,13 38,25 41,13 44,19" fill="none" stroke="#e74c3c" stroke-width="1.5"/><text x="3" y="35" fill="#2ecc71" font-size="6" font-family="monospace">B</text><text x="18" y="35" fill="#f5a623" font-size="6" font-family="monospace">M</text><text x="30" y="35" fill="#e74c3c" font-size="6" font-family="monospace">T</text></svg></td>
   <td>Rede RC de Bass/Mid/Treble com potenciômetros — define o caráter do amp</td>
   <td><span class="fo">Bass: lop~ 250-800Hz</span><br><span class="fo">Mid: bp~ 300-1kHz</span><br><span class="fo">Treble: hip~ 1-5kHz</span></td>
   <td><span class="po pf">[lop~] × bass knob</span><span class="po pf">[bp~] × mid knob</span><span class="po pf">[hip~] × treble knob</span></td>
@@ -158,7 +155,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">✨</span>Bright Cap</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="24" x2="45" y2="24" stroke="#555" stroke-width="1.5"/><line x1="5" y1="14" x2="19" y2="14" stroke="#f5a623" stroke-width="1.5"/><line x1="19" y1="9" x2="19" y2="19" stroke="#f5a623" stroke-width="2"/><line x1="23" y1="9" x2="23" y2="19" stroke="#f5a623" stroke-width="2"/><line x1="23" y1="14" x2="45" y2="14" stroke="#f5a623" stroke-width="1.5"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="24" x2="45" y2="24" stroke="#555" stroke-width="1.5"/><line x1="5" y1="14" x2="19" y2="14" stroke="#f5a623" stroke-width="1.5"/><line x1="19" y1="8" x2="19" y2="20" stroke="#f5a623" stroke-width="2.5"/><line x1="25" y1="8" x2="25" y2="20" stroke="#f5a623" stroke-width="2.5"/><line x1="25" y1="14" x2="45" y2="14" stroke="#f5a623" stroke-width="1.5"/></svg></td>
   <td>Capacitor paralelo ao volume pot — boost de agudo em volume baixo</td>
   <td><span class="fo">470pF paralelo ao pot</span><br><span class="fo">boost acima de 2kHz</span></td>
   <td><span class="po pf">[hip~ 2000]</span><span class="po pg">[*~ bright_amt]</span><span class="po pf">[+~] dry signal</span></td>
@@ -167,7 +164,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">🎛️</span>Potenciômetro</div><span class="tag td">Controle</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="19" x2="11" y2="19" stroke="#4fc3f7" stroke-width="2"/><rect x="11" y="13" width="28" height="12" fill="none" stroke="#4fc3f7" stroke-width="1.5" rx="2"/><line x1="39" y1="19" x2="45" y2="19" stroke="#4fc3f7" stroke-width="2"/><line x1="25" y1="13" x2="25" y2="5" stroke="#4fc3f7" stroke-width="1.5"/><polygon points="22,5 28,5 25,0" fill="#4fc3f7"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="19" x2="11" y2="19" stroke="#4fc3f7" stroke-width="2"/><polyline points="11,19 14,13 17,25 20,13 23,25 26,13 29,25 32,13 35,25 38,19" fill="none" stroke="#4fc3f7" stroke-width="1.5"/><line x1="38" y1="19" x2="45" y2="19" stroke="#4fc3f7" stroke-width="2"/><line x1="25" y1="13" x2="25" y2="5" stroke="#4fc3f7" stroke-width="1.5"/><polygon points="22,5 28,5 25,0" fill="#4fc3f7"/></svg></td>
   <td>Controle variável de resistência — volume, drive, tone. Linear (LIN) ou logarítmico (Audio)</td>
   <td><span class="fo">Linear: resposta direta 0-1</span><br><span class="fo">Log/Audio: resposta logarítmica</span></td>
   <td><span class="po pd">[knob] → [sig~]</span><span class="po pd">[hslider] → [sig~]</span><span class="po pd">[expr log($f1+1)/log(2)]</span></td>
@@ -176,7 +173,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">⚖️</span>Cathode Bias</div><span class="tag tb">Bias</span></td>
-  <td><svg width="50" height="38"><line x1="25" y1="4" x2="25" y2="17" stroke="#e0e060" stroke-width="2"/><rect x="12" y="17" width="26" height="12" fill="none" stroke="#e0e060" stroke-width="1.5" rx="2"/><line x1="25" y1="29" x2="25" y2="38" stroke="#e0e060" stroke-width="2"/><line x1="18" y1="38" x2="32" y2="38" stroke="#e0e060" stroke-width="2"/></svg></td>
+  <td><svg width="50" height="38"><line x1="25" y1="4" x2="25" y2="14" stroke="#e0e060" stroke-width="2"/><polyline points="14,14 17,8 20,20 23,8 26,20 29,8 32,20 35,14" fill="none" stroke="#e0e060" stroke-width="1.5"/><line x1="25" y1="26" x2="25" y2="34" stroke="#e0e060" stroke-width="2"/><line x1="18" y1="34" x2="32" y2="34" stroke="#e0e060" stroke-width="1.5"/></svg></td>
   <td>Define ponto de operação da válvula — controla assimetria do clipping</td>
   <td><span class="fo">820Ω → bias baixo (linear)</span><br><span class="fo">2.7K → bias alto (assimétrico)</span></td>
   <td><span class="po pb">[+~ 0.05]</span><span class="po pb">[+~ 0.15]</span></td>
@@ -185,7 +182,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">🔄</span>Phase Inverter</div><span class="tag tr">Fase</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="19" x2="19" y2="19" stroke="#9b59b6" stroke-width="2"/><circle cx="24" cy="19" r="8" fill="none" stroke="#9b59b6" stroke-width="1.5"/><text x="20" y="23" fill="#9b59b6" font-size="11">∅</text><line x1="32" y1="13" x2="45" y2="13" stroke="#9b59b6" stroke-width="2"/><line x1="32" y1="25" x2="45" y2="25" stroke="#9b59b6" stroke-width="2" stroke-dasharray="3,2"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="19" x2="18" y2="19" stroke="#9b59b6" stroke-width="2"/><polygon points="18,12 18,26 32,19" fill="none" stroke="#9b59b6" stroke-width="1.5"/><line x1="32" y1="13" x2="45" y2="13" stroke="#9b59b6" stroke-width="2"/><line x1="32" y1="25" x2="45" y2="25" stroke="#9b59b6" stroke-width="2" stroke-dasharray="3,2"/></svg></td>
   <td>Inverte fase — gera sinal push-pull para os tubos de potência</td>
   <td><span class="fo">Out+ = sinal direto</span><br><span class="fo">Out− = sinal × (−1)</span></td>
   <td><span class="po pr">[*~ 1] → [dac~ 1]</span><span class="po pr">[*~ -1] → [dac~ 2]</span></td>
@@ -201,6 +198,16 @@
   <td class="ex">Presence knob Plexi<br>boost de altas na saída<br>100K NFB + .1uF ≈ 2kHz</td>
 </tr>
 
+<tr>
+  <td><div class="cn"><span class="ic">🌀</span>Indutor Wah</div><span class="tag tf">Filtro</span></td>
+  <td><svg width="50" height="38"><line x1="4" y1="19" x2="10" y2="19" stroke="#ff6b9d" stroke-width="2"/><path d="M10,19 Q14,8 18,19 Q22,30 26,19 Q30,8 34,19 Q38,30 42,19" fill="none" stroke="#ff6b9d" stroke-width="2"/><line x1="42" y1="19" x2="48" y2="19" stroke="#ff6b9d" stroke-width="2"/></svg></td>
+  <td>Indutor + capacitor em série — pico de ressonância sweepável (wah)</td>
+  <td><span class="fo">f = 1/(2π√LC)</span><br><span class="fo">Wah: 500Hz a 2kHz</span></td>
+  <td><span class="po pf">[vcf~]</span><span class="po pm">[expr 500+($f1*1500)] → sig~</span></td>
+  <td class="ex">Pedal wah: LFO ou env~<br>modula freq do vcf~<br>Q=8-12 para ressonância</td>
+</tr>
+
+<!-- SIMULAÇÃO DE VÁLVULAS -->
 <tr class="sh"><td colspan="6">🔮 SIMULAÇÃO DE VÁLVULAS — TUBOS PRÉ-AMP E POTÊNCIA</td></tr>
 
 <tr>
@@ -361,21 +368,12 @@
   <td class="ex">Cada triodo = 1 bloco<br>repete por N estágios<br>power amp depois do pré<br>sag no final da cadeia</td>
 </tr>
 
-<tr>
-  <td><div class="cn"><span class="ic">🌀</span>Indutor Wah</div><span class="tag tf">Filtro</span></td>
-  <td><svg width="50" height="38"><line x1="4" y1="19" x2="11" y2="19" stroke="#ff6b9d" stroke-width="2"/><path d="M11,19 Q15,9 19,19 Q23,29 27,19 Q31,9 35,19 Q39,29 43,19" fill="none" stroke="#ff6b9d" stroke-width="2"/></svg></td>
-  <td>Indutor + capacitor em série — pico de ressonância sweepável (wah)</td>
-  <td><span class="fo">f = 1/(2π√LC)</span><br><span class="fo">Wah: 500Hz a 2kHz</span></td>
-  <td><span class="po pf">[vcf~]</span><span class="po pm">[expr 500+($f1*1500)] → sig~</span></td>
-  <td class="ex">Pedal wah: LFO ou env~<br>modula freq do vcf~<br>Q=8-12 para ressonância</td>
-</tr>
-
 <!-- DELAY -->
 <tr class="sh"><td colspan="6">⏱ DELAY</td></tr>
 
 <tr>
   <td><div class="cn"><span class="ic">🪣</span>BBD Chip</div><span class="tag td">Delay</span></td>
-  <td><svg width="50" height="38"><rect x="8" y="9" width="34" height="20" fill="none" stroke="#4fc3f7" stroke-width="1.5" rx="2"/><text x="12" y="23" fill="#4fc3f7" font-size="8" font-family="monospace">BBD</text><line x1="4" y1="19" x2="8" y2="19" stroke="#4fc3f7" stroke-width="2"/><line x1="42" y1="19" x2="46" y2="19" stroke="#4fc3f7" stroke-width="2"/></svg></td>
+  <td><svg width="50" height="38"><rect x="10" y="9" width="30" height="20" fill="none" stroke="#4fc3f7" stroke-width="1.5" rx="2"/><text x="14" y="23" fill="#4fc3f7" font-size="8" font-family="monospace">BBD</text><line x1="4" y1="19" x2="10" y2="19" stroke="#4fc3f7" stroke-width="2"/><line x1="40" y1="19" x2="46" y2="19" stroke="#4fc3f7" stroke-width="2"/></svg></td>
   <td>Bucket Brigade Device — registros analógicos em série que atrasam o sinal com limitação de banda</td>
   <td><span class="fo">t = N_stages/(2×Fclk)</span><br><span class="fo">MN3005: 4096 estágios</span><br><span class="fo">Banda limitada ~4kHz</span></td>
   <td><span class="po pd">[delwrite~ buf 2000]</span><span class="po pd">[delread~ buf 300]</span><span class="po pf">[lop~ 4000]</span></td>
@@ -498,7 +496,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">📡</span>Ring Modulator</div><span class="tag tm">Modulação</span></td>
-  <td><svg width="50" height="38"><line x1="5" y1="13" x2="19" y2="13" stroke="#ff6b9d" stroke-width="2"/><line x1="5" y1="25" x2="19" y2="25" stroke="#ff6b9d" stroke-width="2"/><rect x="19" y="9" width="16" height="20" fill="none" stroke="#ff6b9d" stroke-width="1.5" rx="2"/><text x="22" y="23" fill="#ff6b9d" font-size="10">×</text><line x1="35" y1="19" x2="45" y2="19" stroke="#ff6b9d" stroke-width="2"/></svg></td>
+  <td><svg width="50" height="38"><line x1="5" y1="13" x2="18" y2="13" stroke="#ff6b9d" stroke-width="2"/><line x1="5" y1="25" x2="18" y2="25" stroke="#ff6b9d" stroke-width="2"/><circle cx="27" cy="19" r="9" fill="none" stroke="#ff6b9d" stroke-width="1.5"/><text x="23" y="23" fill="#ff6b9d" font-size="11" font-family="monospace">×</text><line x1="36" y1="19" x2="45" y2="19" stroke="#ff6b9d" stroke-width="2"/></svg></td>
   <td>Multiplica sinal pelo carrier — cria bandas laterais, som metálico/robótico</td>
   <td><span class="fo">out = signal × carrier</span><br><span class="fo">Carrier: osc puro</span></td>
   <td><span class="po pm">[osc~ carrier_freq]</span><span class="po pm">[*~] × sinal audio</span></td>
@@ -555,7 +553,7 @@
 
 <tr>
   <td><div class="cn"><span class="ic">🔊</span>Transformer</div><span class="tag tg">Ganho</span></td>
-  <td><svg width="50" height="38"><line x1="4" y1="19" x2="14" y2="19" stroke="#f5a623" stroke-width="2"/><path d="M14,8 Q17,19 14,30" fill="none" stroke="#f5a623" stroke-width="2"/><path d="M18,8 Q21,19 18,30" fill="none" stroke="#f5a623" stroke-width="2"/><line x1="21" y1="4" x2="31" y2="4" stroke="#f5a623" stroke-width="1.5"/><path d="M32,8 Q29,19 32,30" fill="none" stroke="#f5a623" stroke-width="2"/><path d="M36,8 Q33,19 36,30" fill="none" stroke="#f5a623" stroke-width="2"/><line x1="36" y1="19" x2="46" y2="19" stroke="#f5a623" stroke-width="2"/></svg></td>
+  <td><svg width="50" height="38"><line x1="4" y1="19" x2="12" y2="19" stroke="#f5a623" stroke-width="2"/><path d="M12,8 Q15,19 12,30" fill="none" stroke="#f5a623" stroke-width="2"/><path d="M16,8 Q19,19 16,30" fill="none" stroke="#f5a623" stroke-width="2"/><line x1="16" y1="4" x2="32" y2="4" stroke="#f5a623" stroke-width="1.5"/><path d="M32,8 Q29,19 32,30" fill="none" stroke="#f5a623" stroke-width="2"/><path d="M36,8 Q33,19 36,30" fill="none" stroke="#f5a623" stroke-width="2"/><line x1="36" y1="19" x2="46" y2="19" stroke="#f5a623" stroke-width="2"/></svg></td>
   <td>Acopla estágios por indução — coloração suave, satura nos extremos, corta subsônicos</td>
   <td><span class="fo">Satura acima de certo nível</span><br><span class="fo">Característica de console</span></td>
   <td><span class="po pc">[expr~ $v1/(1+0.3*$v1*$v1)]</span><span class="po pf">[hip~ 30]</span></td>
@@ -600,17 +598,18 @@
 <!-- CALCULADORA -->
 <div style="margin-top:32px;">
   <div style="color:var(--a1);font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:16px;">🧮 Calculadora — Circuito → PlugData</div>
- 
-  <!-- TABS DA CALCULADORA -->
+
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="calc-tabs">
-    <button class="cbtn active" onclick="showCalc('rc')">RC Filter → hip~/lop~</button>
-    <button class="cbtn" onclick="showCalc('gain')">Ganho de Válvula → *~</button>
-    <button class="cbtn" onclick="showCalc('bypass')">Bypass Cap → Ganho</button>
-    <button class="cbtn" onclick="showCalc('sag')">Power Sag → env~</button>
-    <button class="cbtn" onclick="showCalc('lfo')">LFO → osc~</button>
-    <button class="cbtn" onclick="showCalc('triode')">Triodo Completo</button>
+    <button class="cbtn active" onclick="showCalc('rc',this)">RC Filter</button>
+    <button class="cbtn" onclick="showCalc('gain',this)">Ganho Válvula</button>
+    <button class="cbtn" onclick="showCalc('bypass',this)">Bypass Cap</button>
+    <button class="cbtn" onclick="showCalc('tone',this)">Tone Stack</button>
+    <button class="cbtn" onclick="showCalc('comp',this)">Compressor</button>
+    <button class="cbtn" onclick="showCalc('sag',this)">Power Sag</button>
+    <button class="cbtn" onclick="showCalc('lfo',this)">LFO</button>
+    <button class="cbtn" onclick="showCalc('triode',this)">Triodo</button>
   </div>
- 
+
   <!-- RC FILTER -->
   <div class="calc-panel" id="calc-rc">
     <div class="calc-title">Filtro RC — Coupling Cap / Grid Stopper</div>
@@ -653,7 +652,7 @@
       <div class="result-note" id="rc-note">—</div>
     </div>
   </div>
- 
+
   <!-- GANHO VALVULA -->
   <div class="calc-panel" id="calc-gain" style="display:none">
     <div class="calc-title">Ganho de Válvula Triodo → *~</div>
@@ -662,28 +661,28 @@
       <div class="calc-field">
         <label>Tipo de válvula</label>
         <select id="g-tube" onchange="fillTubeValues()">
-          <option value="100,62500">12AX7 / ECC83 (μ=100)</option>
-          <option value="17,7700">12AU7 / ECC82 (μ=17)</option>
-          <option value="60,10900">12AT7 / ECC81 (μ=60)</option>
-          <option value="11,5200">6SN7 (μ=11)</option>
+          <option value="100,62500">12AX7 / ECC83 (μ=100, Rp=62.5K)</option>
+          <option value="60,10900">12AT7 / ECC81 (μ=60, Rp=10.9K)</option>
+          <option value="17,7700">12AU7 / ECC82 (μ=17, Rp=7.7K)</option>
+          <option value="20,7700">6SN7GT (μ=20, Rp=7.7K)</option>
           <option value="0,0">Custom</option>
         </select>
       </div>
       <div class="calc-field">
         <label>μ (fator de amplificação)</label>
-        <input type="number" id="g-mu" value="100" min="1" oninput="calcGain()">
+        <input type="number" id="g-mu" value="100" min="1" step="any" oninput="calcGain()">
       </div>
       <div class="calc-field">
         <label>Rp — resistência de placa (Ω)</label>
-        <input type="number" id="g-rp" value="62500" min="1" oninput="calcGain()">
+        <input type="number" id="g-rp" value="62500" min="1" step="any" oninput="calcGain()">
       </div>
       <div class="calc-field">
         <label>Rload — resistor de carga (KΩ)</label>
-        <input type="number" id="g-rl" value="100" min="1" oninput="calcGain()">
+        <input type="number" id="g-rl" value="100" min="1" step="any" oninput="calcGain()">
       </div>
       <div class="calc-field">
         <label>Rk — resistor de cathode (Ω)</label>
-        <input type="number" id="g-rk" value="820" min="0" oninput="calcGain()">
+        <input type="number" id="g-rk" value="820" min="0" step="any" oninput="calcGain()">
       </div>
       <div class="calc-field">
         <label>Bypass cap no cathode?</label>
@@ -699,7 +698,7 @@
       <div class="result-note" id="gain-note">—</div>
     </div>
   </div>
- 
+
   <!-- BYPASS CAP -->
   <div class="calc-panel" id="calc-bypass" style="display:none">
     <div class="calc-title">Cathode Bypass Cap — Frequência de Corte do Boost</div>
@@ -707,7 +706,7 @@
     <div class="calc-grid">
       <div class="calc-field">
         <label>Rk — resistor de cathode (Ω)</label>
-        <input type="number" id="bp-rk" value="820" min="1" oninput="calcBypass()">
+        <input type="number" id="bp-rk" value="820" min="1" step="any" oninput="calcBypass()">
       </div>
       <div class="calc-field">
         <label>Capacitor de bypass</label>
@@ -721,11 +720,11 @@
       </div>
       <div class="calc-field">
         <label>Ganho sem bypass (*~)</label>
-        <input type="number" id="bp-gain-low" value="25" min="1" oninput="calcBypass()">
+        <input type="number" id="bp-gain-low" value="25" min="1" step="any" oninput="calcBypass()">
       </div>
       <div class="calc-field">
         <label>Ganho com bypass (*~)</label>
-        <input type="number" id="bp-gain-high" value="45" min="1" oninput="calcBypass()">
+        <input type="number" id="bp-gain-high" value="45" min="1" step="any" oninput="calcBypass()">
       </div>
     </div>
     <div class="calc-result" id="bypass-result">
@@ -734,7 +733,93 @@
       <div class="result-note" id="bp-note">—</div>
     </div>
   </div>
- 
+
+  <!-- TONE STACK -->
+  <div class="calc-panel" id="calc-tone" style="display:none">
+    <div class="calc-title">Tone Stack — Baxandall / Fender / Marshall</div>
+    <div class="calc-desc">Simula a rede de tonalidade com 3 bandas (Bass, Mid, Treble)</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Topology</label>
+        <select id="ts-type" onchange="calcTone()">
+          <option value="baxandall">Baxandall (ativo, EQ simétrico)</option>
+          <option value="fender">Fender Bassman (passivo, scooped mids)</option>
+          <option value="marshall">Marshall Plexi (passivo, mid boost)</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Bass Pot (KΩ)</label>
+        <input type="number" id="ts-bass" value="250" min="1" step="any" oninput="calcTone()">
+      </div>
+      <div class="calc-field">
+        <label>Mid Pot (KΩ)</label>
+        <input type="number" id="ts-mid" value="25" min="1" step="any" oninput="calcTone()">
+      </div>
+      <div class="calc-field">
+        <label>Treble Pot (KΩ)</label>
+        <input type="number" id="ts-treble" value="250" min="1" step="any" oninput="calcTone()">
+      </div>
+      <div class="calc-field">
+        <label>Bass freq center (Hz)</label>
+        <input type="number" id="ts-bass-f" value="300" min="20" step="any" oninput="calcTone()">
+      </div>
+      <div class="calc-field">
+        <label>Mid freq center (Hz)</label>
+        <input type="number" id="ts-mid-f" value="700" min="100" step="any" oninput="calcTone()">
+      </div>
+      <div class="calc-field">
+        <label>Treble freq corner (Hz)</label>
+        <input type="number" id="ts-treble-f" value="2500" min="500" step="any" oninput="calcTone()">
+      </div>
+    </div>
+    <div class="calc-result" id="tone-result">
+      <div class="result-freq" id="ts-val">—</div>
+      <div class="result-obj" id="ts-obj">—</div>
+      <div class="result-note" id="ts-note">—</div>
+    </div>
+  </div>
+
+  <!-- COMPRESSOR -->
+  <div class="calc-panel" id="calc-comp" style="display:none">
+    <div class="calc-title">Compressor / Limiter → env~ + ganho</div>
+    <div class="calc-desc">Calcula os parâmetros de compressão dinâmica para PlugData</div>
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label>Tipo</label>
+        <select id="comp-type" onchange="calcComp()">
+          <option value="compressor">Compressor (ratio variável)</option>
+          <option value="limiter">Limiter (ratio ∞:1)</option>
+          <option value="noise-gate">Noise Gate (threshold)</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label>Threshold (dBFS)</label>
+        <input type="number" id="comp-thresh" value="-20" min="-60" max="0" step="1" oninput="calcComp()">
+      </div>
+      <div class="calc-field">
+        <label>Ratio (ex: 4 para 4:1)</label>
+        <input type="number" id="comp-ratio" value="4" min="1" step="0.5" oninput="calcComp()">
+      </div>
+      <div class="calc-field">
+        <label>Attack (ms)</label>
+        <input type="number" id="comp-attack" value="10" min="0.1" step="1" oninput="calcComp()">
+      </div>
+      <div class="calc-field">
+        <label>Release (ms)</label>
+        <input type="number" id="comp-release" value="100" min="10" step="10" oninput="calcComp()">
+      </div>
+      <div class="calc-field">
+        <label>Makeup Gain (dB)</label>
+        <input type="number" id="comp-makeup" value="0" min="0" max="24" step="1" oninput="calcComp()">
+      </div>
+    </div>
+    <div class="calc-result" id="comp-result">
+      <div class="result-freq" id="comp-val">—</div>
+      <div class="result-obj" id="comp-obj">—</div>
+      <div class="result-note" id="comp-note">—</div>
+    </div>
+  </div>
+
   <!-- POWER SAG -->
   <div class="calc-panel" id="calc-sag" style="display:none">
     <div class="calc-title">Power Sag → env~ threshold e depth</div>
@@ -742,7 +827,15 @@
     <div class="calc-grid">
       <div class="calc-field">
         <label>Wattagem do amp (W)</label>
-        <input type="number" id="sag-w" value="50" min="1" oninput="calcSag()">
+        <input type="number" id="sag-w" value="50" min="1" step="any" oninput="calcSag()">
+      </div>
+      <div class="calc-field">
+        <label>Impedância saída (Ω)</label>
+        <select id="sag-imp" onchange="calcSag()">
+          <option value="4">4Ω</option>
+          <option value="8" selected>8Ω</option>
+          <option value="16">16Ω</option>
+        </select>
       </div>
       <div class="calc-field">
         <label>Intensidade do sag</label>
@@ -755,11 +848,11 @@
       </div>
       <div class="calc-field">
         <label>Attack do envelope (ms)</label>
-        <input type="number" id="sag-att" value="10" min="1" oninput="calcSag()">
+        <input type="number" id="sag-att" value="10" min="1" step="1" oninput="calcSag()">
       </div>
       <div class="calc-field">
         <label>Release do envelope (ms)</label>
-        <input type="number" id="sag-rel" value="150" min="1" oninput="calcSag()">
+        <input type="number" id="sag-rel" value="150" min="1" step="10" oninput="calcSag()">
       </div>
     </div>
     <div class="calc-result" id="sag-result">
@@ -768,20 +861,20 @@
       <div class="result-note" id="sag-note">—</div>
     </div>
   </div>
- 
+
   <!-- LFO -->
   <div class="calc-panel" id="calc-lfo" style="display:none">
     <div class="calc-title">LFO → osc~ rate e depth</div>
-    <div class="calc-desc">Calcula os parâmetros do LFO para tremolo, chorus, flanger e vibrato</div>
+    <div class="calc-desc">Calcula os parâmetros do LFO para modulação</div>
     <div class="calc-grid">
       <div class="calc-field">
         <label>Tipo de efeito</label>
         <select id="lfo-type" onchange="calcLFO()">
-          <option value="tremolo">Tremolo</option>
-          <option value="chorus">Chorus</option>
-          <option value="flanger">Flanger</option>
-          <option value="vibrato">Vibrato</option>
-          <option value="wah">Auto-Wah</option>
+          <option value="tremolo">Tremolo (modula amplitude)</option>
+          <option value="chorus">Chorus (delay modulado)</option>
+          <option value="flanger">Flanger (delay curto + feedback)</option>
+          <option value="vibrato">Vibrato (modula pitch)</option>
+          <option value="wah">Auto-Wah (env~ → filtro)</option>
         </select>
       </div>
       <div class="calc-field">
@@ -799,7 +892,7 @@
       <div class="result-note" id="lfo-note">—</div>
     </div>
   </div>
- 
+
   <!-- TRIODO COMPLETO -->
   <div class="calc-panel" id="calc-triode" style="display:none">
     <div class="calc-title">Estágio de Triodo Completo — Patch PlugData Gerado</div>
@@ -808,244 +901,390 @@
       <div class="calc-field">
         <label>Válvula</label>
         <select id="t-tube" onchange="fillTriodeValues()">
-          <option value="100,62500,45">12AX7 (μ=100)</option>
-          <option value="17,7700,12">12AU7 (μ=17)</option>
-          <option value="60,10900,25">12AT7 (μ=60)</option>
+          <option value="100,62500">12AX7 / ECC83 (μ=100)</option>
+          <option value="60,10900">12AT7 / ECC81 (μ=60)</option>
+          <option value="17,7700">12AU7 / ECC82 (μ=17)</option>
+          <option value="20,7700">6SN7GT (μ=20)</option>
         </select>
       </div>
       <div class="calc-field">
         <label>Coupling cap de entrada (µF)</label>
-        <input type="number" id="t-cin" value="0.022" step="any" oninput="calcTriode()">
+        <input type="number" id="t-cin" value="0.022" min="0.001" step="any" oninput="calcTriode()">
       </div>
       <div class="calc-field">
         <label>Resistor de entrada (KΩ)</label>
-        <input type="number" id="t-rin" value="68" oninput="calcTriode()">
+        <input type="number" id="t-rin" value="68" min="1" step="any" oninput="calcTriode()">
       </div>
       <div class="calc-field">
         <label>Rload — carga (KΩ)</label>
-        <input type="number" id="t-rl" value="100" oninput="calcTriode()">
+        <input type="number" id="t-rl" value="100" min="1" step="any" oninput="calcTriode()">
       </div>
       <div class="calc-field">
         <label>Rk — cathode (Ω)</label>
-        <input type="number" id="t-rk" value="820" oninput="calcTriode()">
+        <input type="number" id="t-rk" value="820" min="0" step="any" oninput="calcTriode()">
       </div>
       <div class="calc-field">
         <label>Bypass cap cathode (µF)</label>
-        <input type="number" id="t-cbp" value="0.68" step="any" oninput="calcTriode()">
+        <input type="number" id="t-cbp" value="0.68" min="0.001" step="any" oninput="calcTriode()">
       </div>
       <div class="calc-field">
         <label>Coupling cap de saída (µF)</label>
-        <input type="number" id="t-cout" value="0.022" step="any" oninput="calcTriode()">
+        <input type="number" id="t-cout" value="0.022" min="0.001" step="any" oninput="calcTriode()">
       </div>
       <div class="calc-field">
         <label>Resistor de saída (KΩ)</label>
-        <input type="number" id="t-rout" value="470" oninput="calcTriode()">
+        <input type="number" id="t-rout" value="470" min="1" step="any" oninput="calcTriode()">
       </div>
     </div>
     <div class="calc-result" id="triode-result" style="padding:0">
       <pre id="triode-patch" style="font-family:'Share Tech Mono',monospace;font-size:12px;color:#2ecc71;background:#0d0d1a;padding:16px;border-radius:4px;line-height:1.8;white-space:pre-wrap;margin:0;border-top:2px solid #2ecc71;"></pre>
-      <button onclick="copyTriode()" style="margin:10px;padding:8px 20px;background:var(--a3);color:#000;border:none;border-radius:4px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px;">📋 COPIAR PATCH</button>
+      <div style="padding:10px;display:flex;gap:8px;align-items:center;">
+        <button id="btn-copy-triode" onclick="copyTriode()" style="padding:8px 20px;background:var(--a3);color:#000;border:none;border-radius:4px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px;">📋 COPIAR PATCH</button>
+        <span id="copy-feedback" style="font-size:11px;color:var(--a3);display:none;">✓ Copiado!</span>
+      </div>
     </div>
   </div>
- 
+
 </div>
- 
-<style>
-.cbtn{padding:7px 14px;border-radius:4px;font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all .2s;}
-.cbtn:hover{color:var(--text);border-color:#444;}
-.cbtn.active{background:var(--a1);color:#000;border-color:transparent;}
-.calc-panel{background:#12121a;border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:4px;}
-.calc-title{color:var(--a1);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
-.calc-desc{color:var(--muted);font-size:11px;margin-bottom:16px;}
-.calc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px;}
-.calc-field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;}
-.calc-field input,.calc-field select{width:100%;background:#1a1a28;border:1px solid var(--border);border-radius:4px;padding:8px 10px;color:var(--text);font-size:13px;font-family:'Share Tech Mono',monospace;outline:none;transition:border .2s;}
-.calc-field input:focus,.calc-field select:focus{border-color:var(--a1);}
-.calc-field select option{background:#1a1a28;}
-.calc-result{background:#0d0d1a;border:1px solid var(--border);border-radius:4px;padding:14px;border-top:2px solid var(--a1);}
-.result-freq{font-size:22px;font-weight:700;color:var(--a1);font-family:'Share Tech Mono',monospace;margin-bottom:6px;}
-.result-obj{font-size:16px;color:var(--a3);font-family:'Share Tech Mono',monospace;background:#1a2a1a;padding:8px 12px;border-radius:4px;margin-bottom:6px;border-left:3px solid var(--a3);}
-.result-note{font-size:11px;color:var(--muted);line-height:1.6;}
-</style>
- 
+
 <script>
-function showCalc(id) {
-  document.querySelectorAll('.calc-panel').forEach(p => p.style.display='none');
-  document.querySelectorAll('.cbtn').forEach(b => b.classList.remove('active'));
+function showCalc(id, btn) {
+  document.querySelectorAll('.calc-panel').forEach(function(p) { p.style.display='none'; });
+  document.querySelectorAll('.cbtn').forEach(function(b) { b.classList.remove('active'); });
   document.getElementById('calc-'+id).style.display='block';
-  event.target.classList.add('active');
-  // trigger calc
-  const fns = {rc:calcRC,gain:calcGain,bypass:calcBypass,sag:calcSag,lfo:calcLFO,triode:calcTriode};
+  if(btn) btn.classList.add('active');
+  var fns = {rc:calcRC,gain:calcGain,bypass:calcBypass,tone:calcTone,comp:calcComp,sag:calcSag,lfo:calcLFO,triode:calcTriode};
   if(fns[id]) fns[id]();
 }
- 
-function calcRC() {
-  const R = parseFloat(document.getElementById('rc-r').value) * parseFloat(document.getElementById('rc-r-unit').value);
-  const C = parseFloat(document.getElementById('rc-c').value) * parseFloat(document.getElementById('rc-c-unit').value);
-  const type = document.getElementById('rc-type').value;
-  if(!R||!C) return;
-  const f = 1 / (2 * Math.PI * R * C);
-  const fRound = Math.round(f);
-  const obj = type === 'hip' ? `[hip~ ${fRound}]` : `[lop~ ${fRound}]`;
-  const role = type === 'hip' ? 'Corta frequências ABAIXO de' : 'Corta frequências ACIMA de';
-  const use = type === 'hip' ? 'Coupling cap, grid stopper HP, DC block' : 'Anti-aliasing, cabinet sim, grid stopper LP';
-  document.getElementById('rc-freq').textContent = fRound + ' Hz';
-  document.getElementById('rc-obj').textContent = obj;
-  document.getElementById('rc-note').innerHTML = `${role} <strong>${fRound}Hz</strong><br>Uso: ${use}`;
+
+function safeFloat(id, def) {
+  var v = parseFloat(document.getElementById(id).value);
+  return (isNaN(v) || v <= 0) ? def : v;
 }
- 
+
+function fmtFreq(hz) {
+  if(hz >= 1000) return (hz/1000).toFixed(1) + ' KHz';
+  return hz + ' Hz';
+}
+
+function calcRC() {
+  var R = parseFloat(document.getElementById('rc-r').value) * parseFloat(document.getElementById('rc-r-unit').value);
+  var C = parseFloat(document.getElementById('rc-c').value) * parseFloat(document.getElementById('rc-c-unit').value);
+  var type = document.getElementById('rc-type').value;
+  if(!R || !C || R <= 0 || C <= 0) return;
+  var f = 1 / (2 * Math.PI * R * C);
+  var fRound = Math.round(f);
+  var obj = type === 'hip' ? '[hip~ '+fRound+']' : '[lop~ '+fRound+']';
+  var role = type === 'hip' ? 'Corta frequências ABAIXO de' : 'Corta frequências ACIMA de';
+  var use = type === 'hip' ? 'Coupling cap, DC block, bypass cap boost' : 'Grid stopper LP, anti-aliasing, cabinet sim';
+  document.getElementById('rc-freq').textContent = fmtFreq(fRound);
+  document.getElementById('rc-obj').textContent = obj;
+  document.getElementById('rc-note').innerHTML = role+' <strong>'+fmtFreq(fRound)+'</strong><br>Uso: '+use;
+}
+
 function fillTubeValues() {
-  const vals = document.getElementById('g-tube').value.split(',');
+  var vals = document.getElementById('g-tube').value.split(',');
   if(vals[0]==='0') return;
   document.getElementById('g-mu').value = vals[0];
   document.getElementById('g-rp').value = vals[1];
   calcGain();
 }
- 
+
 function calcGain() {
-  const mu = parseFloat(document.getElementById('g-mu').value);
-  const rp = parseFloat(document.getElementById('g-rp').value);
-  const rl = parseFloat(document.getElementById('g-rl').value) * 1000;
-  const rk = parseFloat(document.getElementById('g-rk').value);
-  const bypass = document.getElementById('g-bypass').value === '1';
-  if(!mu||!rp||!rl) return;
-  let gain;
+  var mu = safeFloat('g-mu', 100);
+  var rp = safeFloat('g-rp', 62500);
+  var rl = safeFloat('g-rl', 100) * 1000;
+  var rk = safeFloat('g-rk', 820);
+  var bypass = document.getElementById('g-bypass').value === '1';
+  var gain;
   if(bypass) {
     gain = (mu * rl) / (rl + rp);
   } else {
     gain = (mu * rl) / (rl + rp + (mu+1)*rk);
   }
   gain = Math.round(gain * 10) / 10;
-  const bias = Math.round(rk * 0.001 * 100) / 100;
+  var bias = Math.min(0.15, rk * 0.001);
+  bias = Math.round(bias * 1000) / 1000;
   document.getElementById('gain-val').textContent = 'Ganho: ' + gain + 'x';
-  document.getElementById('gain-obj').textContent = `[*~ ${gain}]`;
-  document.getElementById('gain-note').innerHTML = 
-    `Bias offset (DC): <strong>[+~ ${bias > 0.15 ? '0.15' : bias.toFixed(3)}]</strong> antes do expr~<br>` +
-    `Clipping: <strong>[expr~ $v1/(1+abs($v1))]</strong><br>` +
-    `${bypass ? 'Com bypass cap — ganho máximo' : 'Sem bypass cap — ganho reduzido'}`;
+  document.getElementById('gain-obj').textContent = '[*~ '+gain+']';
+  document.getElementById('gain-note').innerHTML =
+    'Fórmula: μ×Rload / (Rload+Rp' + (bypass ? '' : '+(μ+1)×Rk') + ')<br>'+
+    'Bias offset (DC): <strong>[+~ '+bias.toFixed(3)+']</strong> antes do expr~<br>'+
+    'Clipping: <strong>[expr~ $v1/(1+abs($v1))]</strong><br>'+
+    (bypass ? 'Com bypass cap — ganho máximo' : 'Sem bypass cap — ganho reduzido');
 }
- 
+
 function calcBypass() {
-  const rk = parseFloat(document.getElementById('bp-rk').value);
-  const c = parseFloat(document.getElementById('bp-c').value) * parseFloat(document.getElementById('bp-c-unit').value);
-  const gLow = document.getElementById('bp-gain-low').value;
-  const gHigh = document.getElementById('bp-gain-high').value;
-  if(!rk||!c) return;
-  const f = Math.round(1 / (2 * Math.PI * rk * c));
-  document.getElementById('bp-freq').textContent = 'Boost começa em: ' + f + ' Hz';
-  document.getElementById('bp-obj').textContent = `[hip~ ${f}]  [*~ ${gHigh}]`;
-  document.getElementById('bp-note').innerHTML = 
-    `Abaixo de <strong>${f}Hz</strong>: ganho = <strong>[*~ ${gLow}]</strong><br>` +
-    `Acima de <strong>${f}Hz</strong>: ganho = <strong>[*~ ${gHigh}]</strong><br>` +
-    `Adicionar <strong>[hip~ ${f}]</strong> antes do *~ para simular a transição`;
+  var rk = safeFloat('bp-rk', 820);
+  var c = parseFloat(document.getElementById('bp-c').value) * parseFloat(document.getElementById('bp-c-unit').value);
+  var gLow = safeFloat('bp-gain-low', 25);
+  var gHigh = safeFloat('bp-gain-high', 45);
+  if(!c || c <= 0) return;
+  var f = Math.round(1 / (2 * Math.PI * rk * c));
+  document.getElementById('bp-freq').textContent = 'Boost começa em: ' + fmtFreq(f);
+  document.getElementById('bp-obj').textContent = '[hip~ '+f+']  [*~ '+gHigh+']';
+  document.getElementById('bp-note').innerHTML =
+    'Abaixo de <strong>'+fmtFreq(f)+'</strong>: ganho = <strong>[*~ '+gLow+']</strong><br>'+
+    'Acima de <strong>'+fmtFreq(f)+'</strong>: ganho = <strong>[*~ '+gHigh+']</strong><br>'+
+    'Fórmula: f = 1/(2π×Rk×C) = 1/(2π×'+rk+'×'+(c*1000000).toFixed(2)+'µF)<br>'+
+    'Colocar <strong>[hip~ '+f+']</strong> antes do *~ para simular a transição de ganho';
 }
- 
-function calcSag() {
-  const w = parseFloat(document.getElementById('sag-w').value);
-  const level = parseFloat(document.getElementById('sag-level').value);
-  const att = document.getElementById('sag-att').value;
-  const rel = document.getElementById('sag-rel').value;
-  if(!w) return;
-  const thresh = Math.round((0.005 + (100/w)*0.0005) * 1000) / 1000;
-  const depth = level;
-  document.getElementById('sag-val').textContent = `Threshold: ${thresh}  Depth: ${depth}`;
-  document.getElementById('sag-obj').textContent = 
-    `[env~]  [> ${thresh}]  [*~ ${depth}]  [*~] sinal`;
-  document.getElementById('sag-note').innerHTML = 
-    `Amp de <strong>${w}W</strong>: threshold env~ = <strong>${thresh}</strong><br>` +
-    `Sag depth = <strong>${depth}</strong> (redução de ganho)<br>` +
-    `Attack: <strong>${att}ms</strong> | Release: <strong>${rel}ms</strong><br>` +
-    `Use <strong>[line~ 0 ${att}]</strong> e <strong>[line~ 1 ${rel}]</strong> para suavizar`;
-}
- 
-function calcLFO() {
-  const type = document.getElementById('lfo-type').value;
-  const rate = parseFloat(document.getElementById('lfo-rate').value);
-  const depth = parseFloat(document.getElementById('lfo-depth').value);
-  if(!rate||!depth) return;
-  const configs = {
-    tremolo: { base: 0, unit: 'vol', obj: `[osc~ ${rate}]\n[*~ ${depth}]\n[+~ 1]\n[*~ 0.5] → sinal`, note: `LFO modula volume. Range: 1-8Hz. Depth alto = tremolo intenso` },
-    chorus: { base: 20, unit: 'ms delay', obj: `[osc~ ${rate}] × ${Math.round(depth*15)}\n[+~ 20] → delread~ tempo\n[+~] 50% dry + 50% wet`, note: `Delay base 20ms ±${Math.round(depth*15)}ms. LFO range: 0.2-3Hz` },
-    flanger: { base: 5, unit: 'ms delay', obj: `[osc~ ${rate}] × ${Math.round(depth*8)}\n[+~ 5] → delread~ tempo\n[*~ 0.7] feedback`, note: `Delay 1-10ms. Feedback 0.5-0.9 = jet sound` },
-    vibrato: { base: 0, unit: 'pitch', obj: `[osc~ ${rate}] × ${Math.round(depth*15)}\n[+~ tempo_base] → delread~`, note: `Modula tempo do delread~. Profundidade pequena = natural` },
-    wah: { base: 500, unit: 'Hz freq', obj: `[env~]\n[*~ ${Math.round(depth*2000)}]\n[+~ 500] → freq do [vcf~]`, note: `Envelope follower abre filtro. Toca forte = abre mais` }
+
+function calcTone() {
+  var type = document.getElementById('ts-type').value;
+  var bass = safeFloat('ts-bass', 250);
+  var mid = safeFloat('ts-mid', 25);
+  var treble = safeFloat('ts-treble', 250);
+  var bassF = safeFloat('ts-bass-f', 300);
+  var midF = safeFloat('ts-mid-f', 700);
+  var trebleF = safeFloat('ts-treble-f', 2500);
+
+  var topology = {
+    baxandall: { desc: 'Baxandall ativo — EQ simétrico, boost/corte igual', bassR: '250K LIN', midR: '25K LIN', trebleR: '250K LIN' },
+    fender: { desc: 'Fender Bassman — passivo, mids scooped', bassR: '1M LOG', midR: '25K LIN', trebleR: '250K LOG' },
+    marshall: { desc: 'Marshall Plexi — passivo, mid boost', bassR: '250K LOG', midR: '25K LIN', trebleR: '250K LOG' }
   };
-  const c = configs[type];
-  document.getElementById('lfo-val').textContent = `Rate: ${rate}Hz  Depth: ${depth}`;
-  document.getElementById('lfo-obj').textContent = c.obj;
-  document.getElementById('lfo-note').textContent = c.note;
+  var t = topology[type];
+
+  var patch = '; ── TONE STACK ('+type.toUpperCase()+') ──────────────\n'+
+'; '+t.desc+'\n'+
+';\n'+
+'[hip~ '+trebleF+']           ; treble: high pass → hip~ '+trebleF+'Hz\n'+
+'[bp~ '+midF+' 0.7]        ; mid: band pass → bp~ '+midF+'Hz Q=0.7\n'+
+'[lop~ '+bassF+']           ; bass: low pass → lop~ '+bassF+'Hz\n'+
+';\n'+
+'; Potências:\n'+
+'; Bass: '+bass+'KΩ '+t.bassR+'\n'+
+'; Mid: '+mid+'KΩ '+t.midR+'\n'+
+'; Treble: '+treble+'KΩ '+t.trebleR+'\n'+
+';\n'+
+'; Mix: [*~ bass_knob] + [*~ mid_knob] + [*~ treble_knob]';
+
+  document.getElementById('ts-val').textContent = type.charAt(0).toUpperCase()+type.slice(1);
+  document.getElementById('ts-obj').textContent = '[hip~ '+trebleF+']  [bp~ '+midF+' 0.7]  [lop~ '+bassF+']';
+  document.getElementById('ts-note').innerHTML =
+    t.desc+'<br>'+
+    '<strong>Bass:</strong> '+fmtFreq(bassF)+' (lopot) | <strong>Mid:</strong> '+fmtFreq(midF)+' (bpot) | <strong>Treble:</strong> '+fmtFreq(trebleF)+' (hipot)';
 }
- 
+
+function calcComp() {
+  var type = document.getElementById('comp-type').value;
+  var thresh = safeFloat('comp-thresh', -20);
+  var ratio = safeFloat('comp-ratio', 4);
+  var attack = safeFloat('comp-attack', 10);
+  var release = safeFloat('comp-release', 100);
+  var makeup = safeFloat('comp-makeup', 0);
+
+  var threshLin = Math.pow(10, thresh/20);
+  var makeupLin = makeup > 0 ? Math.pow(10, makeup/20) : 1;
+  var ratioInv = 1/ratio;
+
+  var patch, desc;
+  if(type === 'compressor') {
+    patch = '; ── COMPRESSOR ────────────────────────────────\n'+
+    ';\n'+
+    '[env~]                    ; detecta envelope do sinal\n'+
+    '[/ '+threshLin.toFixed(4)+']         ; normaliza pelo threshold\n'+
+    '[clip~ 0 1]              ; limita a 0-1\n'+
+    '[pow~ '+ratioInv.toFixed(2)+']           ; aplica 1/ratio (4:1 → 0.25)\n'+
+    '[*~ '+makeupLin.toFixed(2)+']            ; makeup gain\n'+
+    '[*~ sinal]               ; aplica ao sinal\n'+
+    ';\n'+
+    '; Attack: '+attack+'ms  Release: '+release+'ms\n'+
+    '; Threshold: '+thresh+'dBFS  Ratio: '+ratio+':1';
+    desc = 'Threshold: <strong>'+thresh+'dBFS</strong> = <strong>'+threshLin.toFixed(4)+'</strong> linear<br>'+
+      'Ratio: <strong>'+ratio+':1</strong> → pow~ <strong>'+ratioInv.toFixed(2)+'</strong><br>'+
+      'Attack: <strong>'+attack+'ms</strong> | Release: <strong>'+release+'ms</strong><br>'+
+      (makeup > 0 ? 'Makeup gain: <strong>'+makeup+'dB</strong> = ×'+makeupLin.toFixed(2) : 'Sem makeup gain');
+  } else if(type === 'limiter') {
+    patch = '; ── LIMITER ───────────────────────────────────\n'+
+    ';\n'+
+    '[clip~ -0.95 0.95]       ; hard limit em ±0.95\n'+
+    '; ou alternativa mais suave:\n'+
+    '[expr~ tanh($v1*2)]      ; soft knee limiter\n'+
+    ';\n'+
+    '; Threshold: 0dBFS (hard)\n'+
+    '; Attack: instantâneo';
+    desc = 'Hard limiter: <strong>[clip~ -0.95 0.95]</strong><br>'+
+      'Soft knee: <strong>[expr~ tanh($v1*2)]</strong><br>'+
+      'Attack instantâneo — protege o dac~';
+  } else {
+    var gateThresh = Math.pow(10, thresh/20);
+    patch = '; ── NOISE GATE ────────────────────────────────\n'+
+    ';\n'+
+    '[env~]                    ; detecta envelope\n'+
+    '[> '+gateThresh.toFixed(4)+']           ; compara com threshold\n'+
+    '[line~ 5]                ; suaviza transição (5ms)\n'+
+    '[*~ sinal]               ; 0=silêncio, 1=passa\n'+
+    ';\n'+
+    '; Threshold: '+thresh+'dBFS';
+    desc = 'Threshold: <strong>'+thresh+'dBFS</strong> = <strong>'+gateThresh.toFixed(4)+'</strong> linear<br>'+
+      'env~ < threshold → corta sinal<br>'+
+      '[line~ 5] evita cliques de corte';
+  }
+
+  document.getElementById('comp-val').textContent = type.replace('-',' ');
+  document.getElementById('comp-obj').textContent = patch.split('\n').filter(function(l){return l.trim()&&!l.startsWith(';')}).join('  |  ');
+  document.getElementById('comp-note').innerHTML = desc;
+}
+
+function calcSag() {
+  var w = safeFloat('sag-w', 50);
+  var imp = parseFloat(document.getElementById('sag-imp').value);
+  var level = parseFloat(document.getElementById('sag-level').value);
+  var att = safeFloat('sag-att', 10);
+  var rel = safeFloat('sag-rel', 150);
+
+  var vOut = Math.sqrt(w * imp);
+  var current = vOut / imp;
+  var sagAmount = level * (50 / w);
+  var thresh = Math.max(0.001, Math.min(0.5, 0.01 + (1/w)*0.5));
+  thresh = Math.round(thresh * 1000) / 1000;
+
+  document.getElementById('sag-val').textContent = w+'W @ '+imp+'Ω → '+vOut.toFixed(1)+'Vrms';
+  document.getElementById('sag-obj').textContent =
+    '[env~]  [*~ '+sagAmount.toFixed(2)+']  [expr 1-$f1]  [sig~] → [*~] sinal';
+  document.getElementById('sag-note').innerHTML =
+    '<strong>'+w+'W @ '+imp+'Ω</strong> → Vout = '+vOut.toFixed(1)+'V, I = '+current.toFixed(1)+'A<br>'+
+    'Sag depth: <strong>'+sagAmount.toFixed(2)+'</strong> | Threshold: <strong>'+thresh+'</strong><br>'+
+    'Attack: <strong>'+att+'ms</strong> | Release: <strong>'+rel+'ms</strong><br>'+
+    'Use <strong>[line~ 0 '+att+']</strong> e <strong>[line~ 1 '+rel+']</strong> para suavizar o envelope';
+}
+
+function calcLFO() {
+  var type = document.getElementById('lfo-type').value;
+  var rate = safeFloat('lfo-rate', 1.5);
+  var depth = safeFloat('lfo-depth', 0.5);
+
+  var configs = {
+    tremolo: {
+      rangeHz: '1-8Hz',
+      obj: '[osc~ '+rate+']\n[*~ '+depth+']\n[+~ 1]\n[*~ 0.5] → sinal',
+      note: 'LFO modula amplitude. Depth 0.5 = variação de 50%. Range típico: 1-8Hz'
+    },
+    chorus: {
+      delayMs: Math.round(depth * 15),
+      rangeHz: '0.2-3Hz',
+      obj: '[osc~ '+rate+']\n[*~ '+Math.round(depth*15)+']\n[+~ 20] → delread~\n[+~] mix 50/50 dry+wet',
+      note: 'Delay base 20ms ±'+Math.round(depth*15)+'ms. Osc~ modula tempo do delread~. LFO profundo = chorus mais intenso'
+    },
+    flanger: {
+      delayMs: Math.round(depth * 8),
+      rangeHz: '0.1-5Hz',
+      obj: '[osc~ '+rate+']\n[*~ '+Math.round(depth*8)+']\n[+~ 5] → delread~\n[*~ 0.7] feedback',
+      note: 'Delay 1-10ms com feedback alto. Depth alto = sweeps mais largos. Feedback 0.7 = jet intenso'
+    },
+    vibrato: {
+      cents: Math.round(depth * 20),
+      rangeHz: '3-8Hz',
+      obj: '[osc~ '+rate+']\n[*~ '+Math.round(depth*15)+']\n[+~ tempo_base] → delread~',
+      note: 'Modula pitch via tempo do delread~. ±'+Math.round(depth*20)+' cents. Profundidade alta = efeito de submarino'
+    },
+    wah: {
+      freqRange: Math.round(depth * 2000),
+      rangeHz: '2-10Hz (toe sweep)',
+      obj: '[env~]\n[*~ '+Math.round(depth*2000)+']\n[+~ 500] → freq [vcf~]\n[vcf~] Q=8',
+      note: 'Envelope follower modula frequência do vcf~. Toca forte = filtro abre mais. Q=8-12 para ressonância de wah'
+    }
+  };
+  var c = configs[type];
+  document.getElementById('lfo-val').textContent = rate+'Hz × depth '+depth;
+  document.getElementById('lfo-obj').textContent = c.obj;
+  document.getElementById('lfo-note').innerHTML = 'Range: <strong>'+c.rangeHz+'</strong><br>'+c.note;
+}
+
 function fillTriodeValues() {
-  const vals = document.getElementById('t-tube').value.split(',');
   calcTriode();
 }
- 
+
 function calcTriode() {
-  const tubeVal = document.getElementById('t-tube').value.split(',');
-  const mu = parseFloat(tubeVal[0]);
-  const rp = parseFloat(tubeVal[1]);
-  const gainApprox = parseFloat(tubeVal[2]);
-  const cin = parseFloat(document.getElementById('t-cin').value);
-  const rin = parseFloat(document.getElementById('t-rin').value);
-  const rl = parseFloat(document.getElementById('t-rl').value);
-  const rk = parseFloat(document.getElementById('t-rk').value);
-  const cbp = parseFloat(document.getElementById('t-cbp').value);
-  const cout = parseFloat(document.getElementById('t-cout').value);
-  const rout = parseFloat(document.getElementById('t-rout').value);
- 
-  const fIn = Math.round(1 / (2 * Math.PI * rin * 1000 * cin * 0.000001));
-  const fOut = Math.round(1 / (2 * Math.PI * rout * 1000 * cout * 0.000001));
-  const fBypass = Math.round(1 / (2 * Math.PI * rk * cbp * 0.000001));
-  const gain = Math.round((mu * rl * 1000) / (rl * 1000 + rp));
-  const gainNoBp = Math.round((mu * rl * 1000) / (rl * 1000 + rp + (mu+1)*rk));
-  const bias = Math.min(0.15, Math.round(rk * 0.0001 * 1000) / 1000);
- 
-  const patch = `; ── ESTÁGIO DE TRIODO CALCULADO ──────────────────
-;
-[adc~]
-  |
-[lop~ 20000]          ; grid stopper ${rin}KΩ → RF block
-  |
-[hip~ ${fIn}]           ; coupling cap entrada ${cin}µF + ${rin}KΩ
-  |
-[+~ ${bias.toFixed(3)}]          ; cathode bias offset (Rk=${rk}Ω)
-  |
-[*~ ${gain}]              ; ganho c/ bypass (μ=${mu}, Rload=${rl}KΩ)
-  |                     ; sem bypass: [*~ ${gainNoBp}]
-[expr~ $v1/(1+abs($v1))] ; soft clip assimétrico de válvula
-  |
-[hip~ 20]             ; remove DC offset residual
-  |
-[hip~ ${fBypass}]          ; bypass cap ${cbp}µF + ${rk}Ω — boost acima
-  |
-[hip~ ${fOut}]           ; coupling cap saída ${cout}µF + ${rout}KΩ
-  |
-[*~ volume]           ; potenciômetro de volume do canal
-  |
-[dac~]`;
- 
+  var tubeVal = document.getElementById('t-tube').value.split(',');
+  var mu = parseFloat(tubeVal[0]);
+  var rp = parseFloat(tubeVal[1]);
+  var cin = safeFloat('t-cin', 0.022);
+  var rin = safeFloat('t-rin', 68);
+  var rl = safeFloat('t-rl', 100);
+  var rk = safeFloat('t-rk', 820);
+  var cbp = safeFloat('t-cbp', 0.68);
+  var cout = safeFloat('t-cout', 0.022);
+  var rout = safeFloat('t-rout', 470);
+
+  var fIn = Math.round(1 / (2 * Math.PI * rin * 1000 * cin * 0.000001));
+  var fOut = Math.round(1 / (2 * Math.PI * rout * 1000 * cout * 0.000001));
+  var fBypass = Math.round(1 / (2 * Math.PI * rk * cbp * 0.000001));
+  var gain = Math.round((mu * rl * 1000) / (rl * 1000 + rp));
+  var gainNoBp = Math.round((mu * rl * 1000) / (rl * 1000 + rp + (mu+1)*rk));
+  var bias = Math.min(0.15, rk * 0.001);
+  bias = Math.round(bias * 1000) / 1000;
+
+  var patch = '; ═══════════════════════════════════════════════\n'+
+'; ESTÁGIO DE TRIODO — μ='+mu+', Rp='+rp+'Ω\n'+
+'; Rload='+rl+'KΩ, Rk='+rk+'Ω, Bypass='+cbp+'µF\n'+
+'; ═══════════════════════════════════════════════\n'+
+';\n'+
+'[adc~]\n'+
+'  |\n'+
+'[lop~ 20000]              ; grid stopper '+rin+'KΩ → RF block\n'+
+'  |\n'+
+'[hip~ '+fIn+']               ; coupling cap entrada '+cin+'µF\n'+
+'  |                         ; fc = 1/(2π×'+rin+'K×'+cin+'µF)\n'+
+'[+~ '+bias.toFixed(3)+']              ; cathode bias offset (Rk='+rk+'Ω)\n'+
+'  |\n'+
+'[*~ '+gain+']                  ; ganho c/ bypass (μ×Rload/(Rload+Rp))\n'+
+'  |                         ; sem bypass: [*~ '+gainNoBp+']\n'+
+'[expr~ $v1/(1+abs($v1))]   ; soft clip assimétrico de válvula\n'+
+'  |\n'+
+'[hip~ 20]                 ; remove DC offset residual\n'+
+'  |\n'+
+'; ── BYPASS CAP (boost de graves) ──\n'+
+'[hip~ '+fBypass+']              ; bypass cap '+cbp+'µF + '+rk+'Ω\n'+
+'  |                         ; boost acima de '+fmtFreq(fBypass)+'\n'+
+'; ── SAÍDA ──\n'+
+'[hip~ '+fOut+']               ; coupling cap saída '+cout+'µF\n'+
+'  |\n'+
+'[*~ volume]               ; potenciômetro de volume\n'+
+'  |\n'+
+'[dac~]';
+
   document.getElementById('triode-patch').textContent = patch;
 }
- 
+
 function copyTriode() {
-  const text = document.getElementById('triode-patch').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = event.target;
+  var text = document.getElementById('triode-patch').textContent;
+  var btn = document.getElementById('btn-copy-triode');
+  var fb = document.getElementById('copy-feedback');
+  navigator.clipboard.writeText(text).then(function() {
     btn.textContent = '✅ COPIADO!';
-    setTimeout(() => btn.textContent = '📋 COPIAR PATCH', 2000);
+    fb.style.display = 'inline';
+    setTimeout(function() {
+      btn.textContent = '📋 COPIAR PATCH';
+      fb.style.display = 'none';
+    }, 2000);
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✅ COPIADO!';
+    fb.style.display = 'inline';
+    setTimeout(function() {
+      btn.textContent = '📋 COPIAR PATCH';
+      fb.style.display = 'none';
+    }, 2000);
   });
 }
- 
-// Init
+
 calcRC();
 calcGain();
 calcBypass();
+calcTone();
+calcComp();
 calcSag();
 calcLFO();
 calcTriode();
 </script>
-
 
 </body>
 </html>
